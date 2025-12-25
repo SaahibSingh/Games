@@ -23,7 +23,9 @@ public class Game {
 			    System.out.print("Choice: ");
 
 			    String c = scanner.nextLine();
-
+				System.out.println("Enter your name:");
+				String name = scanner.nextLine();
+				System.out.println("Welcome, " + name + "!");
 			    switch (c) {
 			        case "1":
 			            System.out.println("Choose mode:");

@@ -34,7 +34,11 @@ import java.util.*; //Import from util package
  * @see Attack
  * @see Player
  */
+import java.util.*;
 
+/**
+ * Handles all decision-making for the AI opponent.
+ */
 public class AIController {
 
     private final Random random = new Random();
@@ -85,48 +89,36 @@ public class AIController {
             all.add(new Attack(name));
         }
 
-        // Healing logic
         Attack heal = new Attack(GameConstants.HEALING + " Healing Winds");
+
         if (ai.getHp() < 30 && ai.canUse(heal) && random.nextDouble() < 0.6) {
             return heal;
         }
 
-        // Weighted strong attacks
+        List<Attack> strong = Arrays.asList(
+                new Attack(GameConstants.LIGHTNING + " Lightning Strike"),
+                new Attack(GameConstants.FIREBALL + " Fireball"),
+                new Attack(GameConstants.ICE_SPEAR + " Ice Spear"),
+                new Attack(GameConstants.EARTHQUAKE + " Earthquake"),
+                new Attack(GameConstants.POISON + " Poison Dart")
+        );
+
         if (player.getHp() < 30) {
-            List<Attack> strong = Arrays.asList(
-                    new Attack(GameConstants.LIGHTNING + " Lightning Strike"),
-                    new Attack(GameConstants.FIREBALL + " Fireball"),
-                    new Attack(GameConstants.ICE_SPEAR + " Ice Spear"),
-                    new Attack(GameConstants.EARTHQUAKE + " Earthquake"),
-                    new Attack(GameConstants.POISON + " Poison Dart")
-            );
-
             List<Attack> usable = new ArrayList<>();
-            for (Attack a : strong) {
-            	if (ai.canUse(a)) {
-            		usable.add(a);
-            	}
-            }
-
-            if (!usable.isEmpty()) {
-            	return usable.get(random.nextInt(usable.size()));
-            }
+            for (Attack a : strong) if (ai.canUse(a)) usable.add(a);
+            if (!usable.isEmpty()) return usable.get(random.nextInt(usable.size()));
         }
 
-        // Shield reaction
         Attack shield = new Attack(GameConstants.DEFENDER + " Shield Block");
-        if (lastPlayerAttack != null &&
-                lastPlayerAttack.getDamage() > 15 &&
-                ai.canUse(shield)) {
+        if (lastPlayerAttack != null && lastPlayerAttack.getDamage() > 15 && ai.canUse(shield)) {
             return shield;
         }
 
-        // Random fallback
         List<Attack> usable = new ArrayList<>();
         for (Attack a : all) {
-        	if (ai.canUse(a)) {
-        		usable.add(a);
-        	}
+            if (ai.canUse(a)) {
+                usable.add(a);
+            }
         }
 
         return usable.get(random.nextInt(usable.size()));

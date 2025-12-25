@@ -47,12 +47,31 @@ import java.util.*;
  */
 
 public class BattleEngine {
-	//Variables
+
     private final Scanner scanner = new Scanner(System.in);
     private final Random random = new Random();
     private final AIController aiController = new AIController();
 
+    // Stores the player's chosen name
+    private String playerName = "Player";
+
+    /**
+     * Ask the user for their name before the battle begins.
+     */
+    private void askPlayerName() {
+        System.out.print("Enter your name: ");
+        String input = scanner.nextLine().trim();
+
+        if (!input.isEmpty()) {
+            playerName = input;
+        }
+
+        System.out.println("Welcome, " + playerName + "! Let the battle begin.");
+    }
+
     public void runTurnsMode(Stats stats) {
+        askPlayerName();  // <-- NEW
+
         Player player = new Player();
         Player ai = new Player();
         Attack lastPlayerAttack = null;
@@ -68,26 +87,29 @@ public class BattleEngine {
             lastPlayerAttack = pAtk;
 
             if (checkEnd(stats, player, ai)) {
-            	return;
-            }
+				return;
+			}
         }
 
         System.out.println("\nTime's up!");
         showHealth(player, ai);
+
         if (player.getHp() > ai.getHp()) {
-            System.out.println("You win!");
-            Stats.wins++;
+            System.out.println(playerName + " wins!");
+            stats.wins++;
         } else if (player.getHp() < ai.getHp()) {
-            System.out.println("You lose!");
-            Stats.losses++;
+            System.out.println(playerName + " loses!");
+            stats.losses++;
         } else {
             System.out.println("It's a draw!");
-            Stats.draws++;
+            stats.draws++;
         }
-        Stats.battles++;
+        stats.battles++;
     }
 
     public void runHealthMode(Stats stats) {
+        askPlayerName();  // <-- NEW
+
         Player player = new Player();
         Player ai = new Player();
         Attack lastPlayerAttack = null;
@@ -104,19 +126,19 @@ public class BattleEngine {
 
         if (player.getHp() <= 0 && ai.getHp() <= 0) {
             System.out.println("Draw!");
-            Stats.draws++;
+            stats.draws++;
         } else if (player.getHp() <= 0) {
-            System.out.println("You lose!");
-            Stats.losses++;
+            System.out.println(playerName + " loses!");
+            stats.losses++;
         } else {
-            System.out.println("You win!");
-            Stats.wins++;
+            System.out.println(playerName + " wins!");
+            stats.wins++;
         }
-        Stats.battles++;
+        stats.battles++;
     }
 
     private void executeTurn(Player player, Player ai, Attack pAtk, Attack aAtk) {
-        animate("You", pAtk);
+        animate(playerName, pAtk);
         resolveAttack(player, ai, pAtk);
 
         animate("AI", aAtk);
@@ -173,9 +195,7 @@ public class BattleEngine {
                 int choice = Integer.parseInt(scanner.nextLine());
                 if (choice >= 1 && choice <= GameConstants.ATTACK_ORDER.size()) {
                     Attack a = new Attack(GameConstants.ATTACK_ORDER.get(choice - 1));
-                    if (player.canUse(a)) {
-                    	return a;
-                    }
+                    if (player.canUse(a)) return a;
                 }
             } catch (Exception ignored) {}
             System.out.println("Invalid choice. Try again.");
@@ -188,37 +208,35 @@ public class BattleEngine {
         if (frames != null) {
             for (String frame : frames) {
                 System.out.println(frame);
-                try { 
-                	Thread.sleep(80); 
-                } catch (InterruptedException ignored) {}
+                try { Thread.sleep(80); } catch (InterruptedException ignored) {}
             }
         }
     }
 
     private void showHealth(Player p, Player a) {
-        System.out.println("Player HP: " + p.getHp());
+        System.out.println(playerName + " HP: " + p.getHp());
         System.out.println("AI HP: " + a.getHp());
     }
 
     private boolean checkEnd(Stats stats, Player p, Player a) {
         if (p.getHp() <= 0 && a.getHp() <= 0) {
             System.out.println("Draw!");
-            Stats.draws++;
-            Stats.battles++;
+            stats.draws++;
+            stats.battles++;
             return true;
         }
 
         if (p.getHp() <= 0) {
-            System.out.println("You lose!");
-            Stats.losses++;
-            Stats.battles++;
+            System.out.println(playerName + " loses!");
+            stats.losses++;
+            stats.battles++;
             return true;
         }
 
         if (a.getHp() <= 0) {
-            System.out.println("You win!");
-            Stats.wins++;
-            Stats.battles++;
+            System.out.println(playerName + " wins!");
+            stats.wins++;
+            stats.battles++;
             return true;
         }
 

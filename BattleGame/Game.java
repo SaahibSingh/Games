@@ -15,6 +15,9 @@ public class Game {
 			BattleEngine engine = new BattleEngine();
 
 			while (true) {
+				String name = scanner.nextLine();
+				System.out.println("Welcome, " + name + "!");
+				
 			    System.out.println("\n=== EMOJI BATTLE ===");
 			    System.out.println("1. Start Game");
 			    System.out.println("2. How to Play");
@@ -24,8 +27,7 @@ public class Game {
 
 			    String c = scanner.nextLine();
 				System.out.println("Enter your name:");
-				String name = scanner.nextLine();
-				System.out.println("Welcome, " + name + "!");
+				
 			    switch (c) {
 			        case "1":
 			            System.out.println("Choose mode:");

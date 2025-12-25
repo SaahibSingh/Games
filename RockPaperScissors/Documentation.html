@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rock Paper Scissors – Project Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px 15px 40px;
+            line-height: 1.6;
+            color: #222;
+            background-color: #f8f8f8;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        code {
+            background-color: #eee;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 0.95em;
+        }
+        pre {
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 10px 12px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.9em;
+        }
+        .file-card {
+            background-color: #ffffff;
+            border-radius: 6px;
+            padding: 12px 14px;
+            margin-bottom: 14px;
+            border-left: 4px solid #007acc;
+        }
+        .tag {
+            display: inline-block;
+            padding: 2px 6px;
+            margin-right: 4px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            color: #fff;
+        }
+        .tag-main { background-color: #007acc; }
+        .tag-class { background-color: #666; }
+        .tag-entry { background-color: #2d862d; }
+        ul {
+            margin-top: 4px;
+        }
+        a {
+            color: #007acc;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #ddd;
+            margin: 25px 0;
+        }
+        .note {
+            background-color: #fff8dc;
+            border-left: 4px solid #f0ad4e;
+            padding: 8px 10px;
+            margin-top: 8px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Rock Paper Scissors – Project Overview</h1>
+
+    <p>
+        This repository contains a simple console-based implementation of the classic
+        <strong>Rock, Paper, Scissors</strong> game in Java. The project demonstrates:
+    </p>
+    <ul>
+        <li>Basic game logic and control flow</li>
+        <li>Use of classes, static and instance variables</li>
+        <li>Random number generation</li>
+        <li>User input handling via the console</li>
+    </ul>
+
+    <hr>
+
+    <h2>How the game works</h2>
+
+    <p>
+        The game is played in <strong>rounds</strong> between the <em>user</em> and the <em>computer</em>.
+        Before each game starts, the user chooses how many rounds are needed to win the game
+        (for example, first to 3 wins).
+    </p>
+
+    <ol>
+        <li><strong>Choose rounds to win:</strong> The user enters a positive integer, or <code>0</code> to quit.</li>
+        <li><strong>Play rounds:</strong>
+            In each round, the user enters <code>rock</code>, <code>paper</code>, or <code>scissors</code>.
+            The computer randomly picks one of the three.
+        </li>
+        <li><strong>Determine the round winner:</strong>
+            <ul>
+                <li>Rock beats scissors</li>
+                <li>Scissors beats paper</li>
+                <li>Paper beats rock</li>
+                <li>Same choice results in a tie</li>
+            </ul>
+        </li>
+        <li><strong>End of game:</strong>
+            When either the user or the computer reaches the target number of round wins,
+            the game announces the winner.
+        </li>
+        <li><strong>Play again:</strong>
+            The user can choose to start a new game, repeating the process.
+        </li>
+        <li><strong>Overall statistics:</strong>
+            When the user quits, overall statistics for all games played in this run are displayed.
+        </li>
+    </ol>
+
+    <hr>
+
+    <h2>Project structure</h2>
+
+    <p>
+        All classes are in the <code>rockpaperscissors</code> package:
+    </p>
+
+    <div class="file-card">
+        <h3>Randomizer.java</h3>
+        <span class="tag tag-class">Utility Class</span>
+
+        <p>
+            A small utility class that wraps <code>Math.random()</code> to generate random integers.
+            It provides reusable methods to get random numbers in a range.
+        </p>
+
+        <ul>
+            <li>
+                <strong><code>public static int nextInt()</code></strong><br>
+                Returns a random integer between <code>1</code> and <code>10</code> (inclusive).
+            </li>
+            <li>
+                <strong><code>public static int nextInt(int min, int max)</code></strong><br>
+                Returns a random integer in the range <code>[min, max]</code> (inclusive).
+                This is used by the game to pick the computer's move (rock, paper, or scissors).
+            </li>
+        </ul>
+
+        <div class="note">
+            <strong>Note:</strong> The game uses <code>nextInt(0, 2)</code> to map
+            <code>0 → rock</code>, <code>1 → paper</code>, <code>2 → scissors</code>.
+        </div>
+    </div>
+
+    <div class="file-card">
+        <h3>RockPaperScissors.java</h3>
+        <span class="tag tag-main">Core Game Logic</span>
+
+        <p>
+            This class represents a single game session and also tracks overall statistics
+            across all games played while the program is running.
+        </p>
+
+        <h4>Class (static) fields</h4>
+        <ul>
+            <li><strong><code>totalGamesPlayed</code></strong> – total number of game sessions started.</li>
+            <li><strong><code>totalUserGameWins</code></strong> – total games won by the user.</li>
+            <li><strong><code>totalComputerGameWins</code></strong> – total games won by the computer.</li>
+            <li><strong><code>totalGameTies</code></strong> – total games ending in a tie.</li>
+        </ul>
+
+        <h4>Instance fields (per game session)</h4>
+        <ul>
+            <li><strong><code>userRoundWins</code></strong> – number of rounds the user has won in this game.</li>
+            <li><strong><code>computerRoundWins</code></strong> – number of rounds the computer has won in this game.</li>
+            <li><strong><code>roundsNeededToWin</code></strong> – target number of round wins needed to win the game.</li>
+            <li><strong><code>ties</code></strong> – number of tied rounds in this game.</li>
+        </ul>
+
+        <h4>Key methods</h4>
+        <ul>
+            <li>
+                <strong><code>public RockPaperScissors(int roundsToWin)</code></strong><br>
+                Initializes a new game with the required number of rounds to win, resets per-game counters,
+                and increments <code>totalGamesPlayed</code>.
+            </li>
+            <li>
+                <strong><code>public static String getRandomChoice()</code></strong><br>
+                Uses <code>Randomizer</code> to generate an integer between <code>0</code> and <code>2</code> and
+                converts it to <code>"rock"</code>, <code>"paper"</code>, or <code>"scissors"</code>.
+            </li>
+            <li>
+                <strong><code>public static void printOverallStats()</code></strong><br>
+                Prints the accumulated statistics for all games played: total games, user wins, computer wins, and ties.
+            </li>
+            <li>
+                <strong><code>public String determineRoundWinner(String user, String computer)</code></strong><br>
+                Compares the user’s choice and computer’s choice and returns:
+                <code>"user"</code>, <code>"computer"</code>, or <code>"tie"</code>.
+            </li>
+            <li>
+                <strong><code>public String playRound(String userChoice)</code></strong><br>
+                Generates a computer choice, determines the round winner, updates the round counters,
+                and returns a human-readable message like <em>"User wins this round!"</em>.
+            </li>
+            <li>
+                <strong><code>public boolean hasGameWinner()</code></strong><br>
+                Returns <code>true</code> if either the user or the computer has reached
+                <code>roundsNeededToWin</code>; otherwise <code>false</code>.
+            </li>
+            <li>
+                <strong><code>public String getGameWinnerMessage()</code></strong><br>
+                Determines who won the game based on round wins, updates the appropriate
+                static counters (<code>totalUserGameWins</code>, <code>totalComputerGameWins</code>,
+                or <code>totalGameTies</code>), and returns a message announcing the winner.
+            </li>
+            <li>
+                <strong><code>public void printCurrentGameScore()</code></strong><br>
+                Prints the current number of user wins, computer wins, and ties for this game session.
+            </li>
+        </ul>
+    </div>
+
+    <div class="file-card">
+        <h3>RPSGameRunner.java</h3>
+        <span class="tag tag-entry">Program Entry Point</span>
+
+        <p>
+            This class contains the <code>main</code> method and is responsible for
+            user interaction and controlling the game loop.
+        </p>
+
+        <h4>Responsibilities</h4>
+        <ul>
+            <li>Prompt the user for the number of rounds needed to win.</li>
+            <li>Create a <code>RockPaperScissors</code> game instance.</li>
+            <li>Read and validate the user’s <code>rock/paper/scissors</code> input each round.</li>
+            <li>Call <code>playRound</code> and display round results and current score.</li>
+            <li>Check <code>hasGameWinner()</code> to know when the game ends.</li>
+            <li>Ask the user if they want to play another game.</li>
+            <li>On exit, close the <code>Scanner</code>, print overall stats, and say goodbye.</li>
+        </ul>
+
+        <h4>Running the program</h4>
+        <p>
+            Make sure your files are in a folder structure that matches the package:
+        </p>
+        <pre>
+src/
+  rockpaperscissors/
+    Randomizer.java
+    RockPaperScissors.java
+    RPSGameRunner.java
+        </pre>
+
+        <p>From the root of the project, compile and run:</p>
+        <pre>
+javac src/rockpaperscissors/*.java
+java -cp src rockpaperscissors.RPSGameRunner
+        </pre>
+    </div>
+
+    <hr>
+
+    <h2>Game flow summary</h2>
+
+    <ol>
+        <li>User chooses how many rounds are needed to win.</li>
+        <li>Rounds are played until user or computer reaches that number of wins.</li>
+        <li>Each round:
+            <ul>
+                <li>User enters <code>rock</code>, <code>paper</code>, or <code>scissors</code>.</li>
+                <li>Computer randomly chooses.</li>
+                <li>Round result is displayed and scores are updated.</li>
+            </ul>
+        </li>
+        <li>When the game ends, the winner is announced.</li>
+        <li>User decides whether to start a new game.</li>
+        <li>When user quits, overall statistics across all games are displayed.</li>
+    </ol>
+
+    <hr>
+
+    <h2>Customization ideas</h2>
+
+    <ul>
+        <li>Add more choices (e.g., “lizard” and “Spock”).</li>
+        <li>Track and display percentage of wins/losses.</li>
+        <li>Allow saving statistics between program runs (e.g., to a file).</li>
+        <li>Add a graphical interface using JavaFX or Swing.</li>
+    </ul>
+
+</body>
+</html>

@@ -6,10 +6,15 @@ This repo contains a set of simple interactive games organized under a `games` p
 ## Games Included
 
 Tic-Tac-Toe | Classic 3x3 grid game vs CPU | Completed
+Rock Paper Scissors | Classic Game vs CPU | Will add more detailed statistics to enhance game
+Battle Game | Battle with attacks vs CPU | Completed, python implementation included for accuracy
+
 
 ## Project Structure
 - `/games` – Package containing individual game classes.
-- `/games/tictactoe/` – Tic-Tac-Toe implementation (example; adjust to your actual structure).
+- `/games/TicTacToe/` – Tic-Tac-Toe implementation
+- `/games/RockPaperScissors/` - Rock Paper Scissors Implementation
+- `/games/BattleGame/' - Custom Battle Game Implementation
 - `README.md` – Project documentation.
 
 ## Getting Started

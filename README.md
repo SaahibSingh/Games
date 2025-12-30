@@ -46,9 +46,6 @@ You can add separate subsections for each game with more detailed rules if neede
 3. Ensure the game:
    - Compiles without errors.
    - Handles invalid input gracefully.
-4. Update:
-   - The **Games Included** table.
-   - The **Running a Game** section with run instructions.
 
 ## Contributing
 Contributions are welcome:

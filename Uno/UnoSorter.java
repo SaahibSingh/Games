@@ -23,25 +23,41 @@ public class UnoSorter {
         });
         
         System.out.println("\nSorted hand (lowest color total points first, then by value):");
-        for (String card : cards)  System.out.println(card);
+        for (String card : cards) {
+            System.out.println(card);
+        }
+        
         sc.close();
     }
     
     static int getValue(String card) {
-        if (card.contains("draw 4") || card.contains("wild draw 4")) return 50;
-        if (card.contains("+2") || card.contains("draw 2") || card.contains("skip") || card.contains("reverse") || card.contains("wild")) return 20;
+        if (card.contains("draw 4") || card.contains("wild draw 4") || card.contains("+4") || card.contains("wild +4")) {
+            return 50;
+        }
+        
+        if (card.contains("+2") || card.contains("draw 2") || card.contains("skip") || card.contains("reverse") || card.contains("wild")) {
+            return 20;
+        }
+        
         String[] parts = card.split(" ");
-        if (parts.length >= 2 && parts[1].matches("\\d+")) return Integer.parseInt(parts[1]);
+        if (parts.length >= 2 && parts[1].matches("\\d+")) {
+            return Integer.parseInt(parts[1]);
+        }
+        
         return 0; 
     }
     
     static String getColor(String card) {
-        if (card.contains("wild") || card.contains("draw 4")) return "Wild";
+        if (card.contains("wild") || card.contains("draw 4")) {
+            return "Wild";
+        }
+        
         String[] parts = card.split(" ");
         if (parts.length > 0) {
             String first = parts[0].substring(0, 1).toUpperCase();
             if ("RGBY".contains(first)) return first;
         }
+        
         return "Wild";
     }
     

@@ -6,9 +6,9 @@ public class UnoSorter {
         int n = sc.nextInt();
         sc.nextLine(); // Consume newline
         
-        List<String> cards = new ArrayList<>();
+        ArrayList<String> cards = new ArrayList<String>();
         for (int i = 0; i < n; i++) {
-            System.out.print("Enter card " + (i+1) + " (e.g., 'red 3', 'wild draw 4'): ");
+            System.out.print("Enter card " + (i + 1) + " (e.g., 'red 3', 'wild draw 4'): ");
             cards.add(sc.nextLine().trim().toLowerCase());
         }
         
@@ -18,7 +18,10 @@ public class UnoSorter {
             String colorB = getColor(b);
             int totalA = getColorTotal(cards, colorA);
             int totalB = getColorTotal(cards, colorB);
-            if (totalA != totalB) return Integer.compare(totalA, totalB);
+            if (totalA != totalB) {
+                return Integer.compare(totalA, totalB);
+            }
+            
             return Integer.compare(getValue(a), getValue(b));
         });
         
@@ -55,7 +58,9 @@ public class UnoSorter {
         String[] parts = card.split(" ");
         if (parts.length > 0) {
             String first = parts[0].substring(0, 1).toUpperCase();
-            if ("RGBY".contains(first)) return first;
+            if ("RGBY".contains(first)) {
+                return first;
+            }
         }
         
         return "Wild";

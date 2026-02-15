@@ -1,100 +1,56 @@
-import java.util.*; //Import
+//Imports
+import java.util.Comparator;
+import java.util.List;
+
+/**
+ * Utility class for sorting UNO hands.
+ * Sorts first by total points of each color group, then by individual card points.
+ */
 public class UnoSorter {
-    
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter number of cards: ");
-        int n = sc.nextInt();
-        sc.nextLine(); // Consume newline
-        
-        List<String> cards = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            System.out.print("Enter card " + (i + 1) + " (e.g., 'red 3', 'wild draw 4'): ");
-            cards.add(sc.nextLine().trim().toLowerCase());
-        }
-        
-        // Sort: first by color total points asc, then stable by individual value asc
-        cards.sort((a, b) -> {
-            String colorA = getColor(a);
-            String colorB = getColor(b);
-            int totalA = getColorTotal(cards, colorA);
-            int totalB = getColorTotal(cards, colorB);
-            if (totalA != totalB) {
-                return Integer.compare(totalA, totalB);
+
+    /**
+     * Sorts a hand in-place.
+     * Grouping strategy:
+     * <ul>
+     *     <li>Compute the total points contributed by each color in the hand.</li>
+     *     <li>Sort colors so that the colors with lower total points appear first.</li>
+     *     <li>Within a color group, order cards by their individual point value.</li>
+     * </ul>
+     *
+     * @param hand the list of cards to sort
+     */
+    public static void sortHand(List<Card> hand) {
+        hand.sort(new Comparator<Card>() {
+            @Override
+            public int compare(Card a, Card b) {
+                String colorA = Card.getColorKey(a);
+                String colorB = Card.getColorKey(b);
+
+                int totalA = getColorTotal(hand, colorA);
+                int totalB = getColorTotal(hand, colorB);
+
+                if (totalA != totalB) {
+                    return Integer.compare(totalA, totalB);
+                }
+
+                int valueA = Card.getPoints(a);
+                int valueB = Card.getPoints(b);
+                return Integer.compare(valueA, valueB);
             }
-            
-            return Integer.compare(getValue(a), getValue(b));
         });
-        
-        System.out.println("\nSorted hand (lowest color total points first, then by value):");
-        for (String card : cards) {
-            System.out.println(card);
-        }
-        
-        sc.close();
     }
 
     /**
-    Gives the value of a card
-    Precondition: the String is not null
-    @card -> the card to determine the value of 
-    @return an int containing the points value 
-    */
-    
-    public static int getValue(String card) {
-        if (card.contains("draw 4") || card.contains("wild draw 4") || card.contains("+4") || card.contains("wild +4")) {
-            return 50;
-        }
-        
-        if (card.contains("+2") || card.contains("draw 2") || card.contains("skip") || card.contains("reverse") || card.contains("wild")) {
-            return 20;
-        }
-        
-        String[] parts = card.split(" ");
-        if (parts.length >= 2 && parts[1].matches("\\d+")) {
-            return Integer.parseInt(parts[1]);
-        }
-        
-        return 0; 
-    }
-
-    /**
-    Gives the color the the card
-    Precondition: the card is not null
-    @card -> the card to determine the value of 
-    @return a String containing the color of the card
-    */
-    
-    public static String getColor(String card) {
-        if (card.contains("wild") || card.contains("draw 4")) {
-            return "Wild";
-        }
-        
-        String[] parts = card.split(" ");
-        if (parts.length > 0) {
-            String first = parts[0].substring(0, 1).toUpperCase();
-            if ("RGBY".contains(first)) {
-                return first;
-            }
-        }
-        
-        return "Wild";
-    }
-
-    /**
-    Gives the total of the cards that contain a certain color from a list of cards
-    Precondition I: the list of cards contains all Strings that are not null and contain a valid value from input
-    Precondition II: the String color is not null and represents a valid color
-    Postcondition: cards is not changed, just used to filter it
-    @color -> the color to sum up all of the cards (see filter lambda function)
-    @cards -> the list of cards to filter it from
-    @return an int representing the value of the color total 
-    */
-    
-    public static int getColorTotal(List<String> cards, String color) {
+     * Computes the total points of all cards in the hand that match the given color key.
+     *
+     * @param cards    the cards to examine
+     * @param colorKey the color key ("RED", "BLUE", "WILD", etc.)
+     * @return the sum of points for cards of that color
+     */
+    public static int getColorTotal(List<Card> cards, String colorKey) {
         return cards.stream()
-                    .filter(c -> getColor(c).equals(color))
-                    .mapToInt(UnoSorter::getValue)
-                    .sum();
+                .filter(c -> Card.getColorKey(c).equals(colorKey))
+                .mapToInt(Card::getPoints)
+                .sum();
     }
 }

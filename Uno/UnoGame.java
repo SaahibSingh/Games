@@ -158,18 +158,28 @@ public class UnoGame {
                 System.out.println("Next player draws 2 cards and is skipped!");
                 int nextIndex = getNextPlayerIndex();
                 Player nextPlayer = players.get(nextIndex);
-                nextPlayer.drawCard(deck);
-                nextPlayer.drawCard(deck);
+            
+                nextPlayer.drawCard(deck); // first card
+                nextPlayer.drawCard(deck); // second card
+            
+                System.out.println(nextPlayer.getName() + " now has " + nextPlayer.handSize() + " cards.");
+            
+                // Skip them
                 currentPlayerIndex = nextIndex;
                 advanceToNextPlayer();
                 break;
+            
             case WILD_DRAW_FOUR:
                 System.out.println("Next player draws 4 cards and is skipped!");
                 int idx = getNextPlayerIndex();
                 Player victim = players.get(idx);
+            
                 for (int i = 0; i < 4; i++) {
                     victim.drawCard(deck);
                 }
+            
+                System.out.println(victim.getName() + " now has " + victim.handSize() + " cards.");
+            
                 currentPlayerIndex = idx;
                 advanceToNextPlayer();
                 break;

@@ -1,12 +1,13 @@
 import java.util.*; //Import
 public class UnoSorter {
+    
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter number of cards: ");
         int n = sc.nextInt();
         sc.nextLine(); // Consume newline
         
-        ArrayList<String> cards = new ArrayList<String>();
+        List<String> cards = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             System.out.print("Enter card " + (i + 1) + " (e.g., 'red 3', 'wild draw 4'): ");
             cards.add(sc.nextLine().trim().toLowerCase());
@@ -32,8 +33,15 @@ public class UnoSorter {
         
         sc.close();
     }
+
+    /**
+    Gives the value of a card
+    Precondition: the String is not null
+    @card -> the card to determine the value of 
+    @return an int containing the points value 
+    */
     
-    static int getValue(String card) {
+    public static int getValue(String card) {
         if (card.contains("draw 4") || card.contains("wild draw 4") || card.contains("+4") || card.contains("wild +4")) {
             return 50;
         }
@@ -49,8 +57,15 @@ public class UnoSorter {
         
         return 0; 
     }
+
+    /**
+    Gives the color the the card
+    Precondition: the card is not null
+    @card -> the card to determine the value of 
+    @return a String containing the color of the card
+    */
     
-    static String getColor(String card) {
+    public static String getColor(String card) {
         if (card.contains("wild") || card.contains("draw 4")) {
             return "Wild";
         }
@@ -65,8 +80,18 @@ public class UnoSorter {
         
         return "Wild";
     }
+
+    /**
+    Gives the total of the cards that contain a certain color from a list of cards
+    Precondition I: the list of cards contains all Strings that are not null and contain a valid value from input
+    Precondition II: the String color is not null and represents a valid color
+    Postcondition: cards is not changed, just used to filter it
+    @color -> the color to sum up all of the cards (see filter lambda function)
+    @cards -> the list of cards to filter it from
+    @return an int representing the value of the color total 
+    */
     
-    static int getColorTotal(List<String> cards, String color) {
+    public static int getColorTotal(List<String> cards, String color) {
         return cards.stream()
                     .filter(c -> getColor(c).equals(color))
                     .mapToInt(UnoSorter::getValue)

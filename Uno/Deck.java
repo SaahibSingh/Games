@@ -3,11 +3,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Represents the draw pile in UNO.
+ * Maintains the list of remaining cards to be drawn.
+ */
 public class Deck {
-    private final List<Card> cards = new ArrayList<>(); //Instance Variable - ArrayList
-    public Deck() { reset(); } //Constructor
+    private final List<Card> cards = new ArrayList<>();
+    public Deck() { reset(); }
+
+    /**
+     * Clears and repopulates the deck with a full standard UNO deck,
+     * then shuffles it. 
+     */
     public final void reset() {
         cards.clear();
+
+        // Add colored cards (0-9 + 2x each action card per color).
         for (Card.Color color : new Card.Color[]{Card.Color.RED, Card.Color.YELLOW,
                 Card.Color.GREEN, Card.Color.BLUE}) {
 
@@ -29,6 +40,7 @@ public class Deck {
             }
         }
 
+        // Add wilds.
         for (int i = 0; i < 4; i++) {
             cards.add(new Card(Card.Color.WILD, Card.Value.WILD));
             cards.add(new Card(Card.Color.WILD, Card.Value.WILD_DRAW_FOUR));
@@ -37,23 +49,39 @@ public class Deck {
         shuffle();
     }
 
+    /**
+     * Randomly shuffles the deck.
+     */
     public void shuffle() {
         Collections.shuffle(cards);
     }
 
+    // @return true if the deck is empty, false otherwise
     public boolean isEmpty() {
         return cards.isEmpty();
     }
 
+    /**
+     * Draws the top card from the deck, removing it from the deck.
+     * @return the drawn card, or null if the deck is empty
+     */
     public Card draw() {
         if (cards.isEmpty()) return null;
         return cards.remove(cards.size() - 1);
     }
 
+    /**
+     * Adds a card to the bottom of the deck (index 0).
+     * @param card the card to be added
+     */
     public void addToBottom(Card card) {
         cards.add(0, card);
     }
 
+    /**
+     * Returns how many cards remain in the deck.
+     * @return the current deck size
+     */
     public int size() {
         return cards.size();
     }

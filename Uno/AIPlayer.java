@@ -4,14 +4,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents an AI-controlled UNO player.
+ * Provides simple decision logic to choose playable cards and colors.
+ */
 public class AIPlayer extends Player {
-    public AIPlayer(String name) {  super(name); } //Constuctor
 
     /**
-    Chooses the index from the best possible card based on the current color
-    @topCard - current card
-    @currentColor - current color
-    */
+     * Constructs an AI player with the given name
+     * @param name the AI player's name
+     */
+    public AIPlayer(String name) {
+        super(name);
+    }
+
+    /**
+     * Selects an index of a playable card in the AI's hand.
+     * Strategy:
+     * <ul>
+     *     <li>Collect all playable cards.</li>
+     *     <li>Prefer non-wild cards when possible.</li>
+     *     <li>Fallback to the first playable card if all are wild.</li>
+     * </ul>
+     *
+     * @param topCard      the current card on the discard pile
+     * @param currentColor the active color in play
+     * @return index of the chosen card, or -1 if no card is playable
+     */
     public int chooseCardIndex(Card topCard, Card.Color currentColor) {
         List<Integer> playableIndexes = new ArrayList<>();
 
@@ -27,7 +46,6 @@ public class AIPlayer extends Player {
         }
 
         int bestIndex = -1;
-
         for (int idx : playableIndexes) {
             Card c = hand.get(idx);
             if (!c.isWild()) {
@@ -35,7 +53,6 @@ public class AIPlayer extends Player {
                 break;
             }
         }
-
         if (bestIndex == -1) {
             bestIndex = playableIndexes.get(0);
         }
@@ -43,6 +60,11 @@ public class AIPlayer extends Player {
         return bestIndex;
     }
 
+    /**
+     * Chooses a color when playing a wild card.
+     * Heuristic: pick the color the AI has the most of in its hand.
+     * @return the chosen color
+     */
     public Card.Color chooseWildColor() {
         Map<Card.Color, Integer> counts = new HashMap<>();
         counts.put(Card.Color.RED, 0);
@@ -66,10 +88,8 @@ public class AIPlayer extends Player {
         }
 
         if (bestCount == 0) {
-            // No colored cards, just pick red.
             return Card.Color.RED;
         }
-      
         return bestColor;
     }
 }

@@ -1,5 +1,3 @@
-Here’s an updated `README.md` you can paste over your current one and tweak as you like:
-
 ```markdown
 # Games
 
@@ -10,7 +8,7 @@ A collection of small interactive games (like Tic-Tac-Toe, Rock Paper Scissors, 
 ## Overview
 
 This repository contains a set of terminal-based games implemented in Java and Python, organized into separate folders by game. 
-Each game focuses on improving **logic**, algorithms, and clean code structure through simple, playable examples. 
+Each game focuses on improving logic , algorithms, and clean code structure through simple, playable examples. 
 
 ---
 
@@ -87,8 +85,6 @@ You can extend this section with game-specific instructions (for example, how sp
    ```bash
    java TicTacToeRunner
    ```
-
-(Adjust class names if needed based on your actual files.)
 
 ---
 
